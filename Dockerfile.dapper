@@ -1,0 +1,13 @@
+FROM alpine
+RUN apk add -U alpine-sdk bash coreutils linux-headers
+RUN cd /tmp && git clone https://github.com/axboe/fio.git && \
+    cd fio && git checkout -b fio-2.19 tags/fio-2.19
+WORKDIR /tmp/fio
+RUN ./configure --build-static && make -j$(nproc)
+RUN strip --strip-all fio
+
+ENV DAPPER_SOURCE /source/
+ENV DAPPER_OUTPUT fio
+RUN mkdir -p ${DAPPER_SOURCE}
+WORKDIR ${DAPPER_SOURCE}
+ENTRYPOINT ["/bin/cp", "/tmp/fio/fio", "."]
