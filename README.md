@@ -29,6 +29,19 @@ Fio was written by Jens Axboe <jens.axboe@oracle.com>
 
 There are a ton of example config files in the fio repo under `examples/`.
 
+In the repo `config/` directory there are a few example config files configured for this image. You can run with:
+
+```
+$ docker run -e SIZE=1g -e RUNTIME=60s \
+    -v $(pwd)/config:/config --volume-driver=storageos -v v1:/v \
+    andrelucas/fio:latest vol_test.fio
+```
+
+That seems like a lot of command, but it's doing a lot: You're specifying runtime parameters (`SIZE`, `RUNTIME`) which are used by `vol_test.fio`, mounting the config file into the standard `/config` directory (otherwise fio wouldn't be able to read it), mounting the volume you're testing on the standard `/v` directory, and running the test.
+
+If you stick to the standard config source directory (`/config`, set in the environment as `$CFG`), and the standard mount directiory (`/v`, set in the environment as `$VOL`), you'll have a slightly easier time.
+
+Note that fio can use any environment variable in its config. In `vol_test_fio`, for example, `SIZE`, `RUNTIME`, and `VOL` are used. This means the configuration files don't need to be templatised for simple changes.
 
 ## Building
 
