@@ -1,5 +1,5 @@
 FROM alpine
-RUN apk add -U alpine-sdk bash coreutils linux-headers
+RUN apk add -U alpine-sdk bash coreutils libaio-dev linux-headers
 RUN cd /tmp && git clone https://github.com/axboe/fio.git && \
     cd fio && git checkout -b fio-2.19 tags/fio-2.19
 WORKDIR /tmp/fio
