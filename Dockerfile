@@ -1,6 +1,8 @@
 FROM scratch
 COPY fio /
-VOLUME /config
-WORKDIR /config
 ENV VOL /v
+ENV CFG /config
+VOLUME ${VOL}
+VOLUME ${CFG}
+WORKDIR ${CFG}
 ENTRYPOINT ["/fio"]
